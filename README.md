@@ -2,7 +2,7 @@
 
 1. swagger 추가
 
-> `:parent version 2.5.7 이상은 에러 발생`
+> `parent version 2.5.7 이상은 에러 발생`
 
 ``` 
 	<dependency>
