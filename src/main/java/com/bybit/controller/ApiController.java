@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,25 @@ public class ApiController<T> {
 	VaultTemplate template;
 	@Autowired
 	RedisTemplate<String, Object> redisTemplate;
+	@Autowired
+	RedisMessageListenerContainer container;
 
+	@RequestMapping(method = RequestMethod.GET, value = "haltBybitData", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "haltBybitData", tags = "haltBybitData")
+	public ResponseEntity<HttpStatus> haltBybitData(
+			@RequestParam(defaultValue = "BTCUSDT") String symbol) {
+		
+		this.redisTemplate.convertAndSend("halt.bybit.symbol",Symbols.get(symbol));
+		
+		return ResponseEntity.ok().build();
+	} 
+	
 	@RequestMapping(method = RequestMethod.GET, value = "receiveBybitData", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "receiveBybitData", tags = "receiveBybitData")
 	public ResponseEntity<HttpStatus> receiveBybitData(
 			@RequestParam(defaultValue = "BTCUSDT") String symbol) {
 		
-		this.redisTemplate.convertAndSend("receive.bybit.symbol",symbol);
+		this.redisTemplate.convertAndSend("receive.bybit.symbol",Symbols.get(symbol));
 		
 		return ResponseEntity.ok().build();
 	} 
