@@ -41,23 +41,14 @@ public class BybitRestApplication {
 		SpringApplication.run(BybitRestApplication.class, args);		
 	}
 	
-	@Value("${bybit.api.token}") 
-	String bybitApiToken;
 	
 	@PostConstruct
 	private void postConstruct() {
 		System.out.println("##########################");
 		System.out.println("@PostConstruct");
 		System.out.println("##########################");
-		System.out.println("##########################" + env.getDefaultProfiles()[0]);
-		
-		Map m = Map.of("git.username","aaaa","git.password","bbbb");
-		template.write("bybit-rest/config/git", m);
-
-        VaultResponseSupport<Map> response1 = template.read("bybit-rest/config/git", Map.class);
-        System.out.println(response1.getData().get("git.username"));
-        System.out.println(response1.getData().get("git.password"));
-        System.out.println("bybitApiToken : " + bybitApiToken);
+		System.out.println("##########################" + env.getProperty("spring.redis.host"));
+		System.out.println("##########################" + env.getProperty("spring.redis.port"));
 		
 	}
 	
@@ -70,13 +61,13 @@ public class BybitRestApplication {
 			System.out.println("runner run.");
 			System.out.println("##########################");
 			
-			Properties p = System.getProperties();
-	        Enumeration keys = p.keys();
-	        while (keys.hasMoreElements()) {
-	            String key = (String) keys.nextElement();
-	            String value = (String) p.get(key);
-	            System.out.println(key + ": " + value);
-	        }
+//			Properties p = System.getProperties();
+//	        Enumeration keys = p.keys();
+//	        while (keys.hasMoreElements()) {
+//	            String key = (String) keys.nextElement();
+//	            String value = (String) p.get(key);
+//	            System.out.println(key + ": " + value);
+//	        }
 		};
 	}
 
