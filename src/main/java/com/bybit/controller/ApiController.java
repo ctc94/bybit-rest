@@ -36,7 +36,7 @@ public class ApiController<T> {
 	public ResponseEntity<HttpStatus> haltBybitData(
 			@RequestParam(defaultValue = "BTCUSDT") String symbol) {
 		
-		this.redisTemplate.convertAndSend("halt.bybit.symbol",Symbols.get(symbol));
+		this.redisTemplate.convertAndSend("halt.bybit.symbol",Map.of("symbol",Symbols.get(symbol)));
 		
 		return ResponseEntity.ok().build();
 	} 
@@ -46,7 +46,7 @@ public class ApiController<T> {
 	public ResponseEntity<HttpStatus> receiveBybitData(
 			@RequestParam(defaultValue = "BTCUSDT") String symbol) {
 		
-		this.redisTemplate.convertAndSend("receive.bybit.symbol",Symbols.get(symbol));
+		this.redisTemplate.convertAndSend("receive.bybit.symbol",Map.of("symbol",Symbols.get(symbol)));
 		
 		return ResponseEntity.ok().build();
 	} 

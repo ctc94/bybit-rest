@@ -1,6 +1,7 @@
 package com.bybit.config;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +36,7 @@ public class RedisConfig {
 		final RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
 		template.setConnectionFactory(connectionFactory);
 		//template.setValueSerializer(new StringRedisSerializer());
-		template.setValueSerializer(new Jackson2JsonRedisSerializer(Object.class));
+		template.setValueSerializer(new Jackson2JsonRedisSerializer(Map.class));
 		return template;
 	}
 }

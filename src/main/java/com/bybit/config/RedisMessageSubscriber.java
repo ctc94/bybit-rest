@@ -1,9 +1,12 @@
 package com.bybit.config;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,18 +14,15 @@ public class RedisMessageSubscriber implements MessageListener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedisMessageSubscriber.class);
 
+	Jackson2JsonRedisSerializer<Map<String, String>> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Map.class);
+	
 	@Override
 	public void onMessage(Message message, byte[] pattern) {
-		LOGGER.info(new String(pattern));
-		LOGGER.info(new String(message.getBody()));
-		//
-		/*
-		 * try { JSONObject jObject = new JSONObject(new String(message.getBody()));
-		 * JSONArray jArray = jObject.getJSONArray("data");
-		 * 
-		 * JSONObject obj = jArray.getJSONObject(0); LOGGER.info(obj.toString());
-		 * //LOGGER.info(obj.getBigDecimal("volume").toString()); }catch (JSONException
-		 * e) { // TODO: handle exception }
-		 */
+		String topic = new String(pattern);
+		LOGGER.info(topic);
+		
+		Map<String, String> m = jackson2JsonRedisSerializer.deserialize(message.getBody());
+		String symbol = m.get("symbol");
+		LOGGER.info(symbol);
 	}
 }

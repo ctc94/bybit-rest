@@ -12,7 +12,7 @@ import org.springframework.vault.config.EnvironmentVaultConfiguration;
 @Configuration 
 @PropertySource("vault.properties")
 @Import(EnvironmentVaultConfiguration.class) 
-@VaultPropertySource("bybit-rest/config/${spring.profiles.active:default}")
+@VaultPropertySource("${spring.application.name}/config/${spring.profiles.active:default}")
 @RefreshScope
 public class VaultConfig  {	
 }
