@@ -3,10 +3,8 @@ package com.bybit.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,29 +26,28 @@ public class ApiController<T> {
 	VaultTemplate template;
 	@Autowired
 	RedisTemplate<String, Object> redisTemplate;
-	@Autowired
-	RedisMessageListenerContainer container;
+//	@Autowired
+//	RedisMessageListenerContainer container;
 
 	@RequestMapping(method = RequestMethod.GET, value = "haltBybitData", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "haltBybitData", tags = "haltBybitData")
-	public ResponseEntity<HttpStatus> haltBybitData(
-			@RequestParam(defaultValue = "BTCUSDT") String symbol) {
-		
-		this.redisTemplate.convertAndSend("halt.bybit.symbol",Map.of("symbol",Symbols.get(symbol)));
-		
+	public ResponseEntity<HttpStatus> haltBybitData(@RequestParam(defaultValue = "BTCUSDT") String symbol) {
+
+		this.redisTemplate.convertAndSend("halt.bybit.symbol", Map.of("symbol", Symbols.get(symbol)));
+
 		return ResponseEntity.ok().build();
-	} 
-	
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "receiveBybitData", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "receiveBybitData", tags = "receiveBybitData")
-	public ResponseEntity<HttpStatus> receiveBybitData(
-			@RequestParam(defaultValue = "BTCUSDT") String symbol) {
-		
-		this.redisTemplate.convertAndSend("receive.bybit.symbol",Map.of("symbol",Symbols.get(symbol)));
-		
-		return ResponseEntity.ok().build();
-	} 
+	public ResponseEntity<HttpStatus> receiveBybitData(@RequestParam(defaultValue = "BTCUSDT") String symbol) {
 
+		this.redisTemplate.convertAndSend("receive.bybit.symbol", Map.of("symbol", Symbols.get(symbol)));
+
+		return ResponseEntity.ok().build();
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "getBybitApiKey", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "get ApiKey", tags = "getBybitApiKey")
 	public ResponseEntity<Map<String, String>> getBybitApiKey(
@@ -61,6 +58,7 @@ public class ApiController<T> {
 		return ResponseEntity.ok(res.getData());
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST, value = "putBybitApiKey", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "put ApiKey", tags = "putBybitApiKey")
 	public ResponseEntity<Map<String, String>> postBybitApiKey(
@@ -74,6 +72,7 @@ public class ApiController<T> {
 		return ResponseEntity.ok(res.getData());
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "getGitToken", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "get GitToken", tags = "getGitToken")
 	public ResponseEntity<Map<String, String>> getGitToken(@RequestParam(defaultValue = "bybit-rest/git") String path) {
@@ -83,6 +82,7 @@ public class ApiController<T> {
 		return ResponseEntity.ok(res.getData());
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "putGitToken", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "put GitToken", tags = "putGitToken")
 	public ResponseEntity<Map<String, String>> putGitToken(@RequestParam(defaultValue = "bybit-rest/git") String path,
